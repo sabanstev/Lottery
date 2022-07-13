@@ -67,6 +67,21 @@ describe("Lottery", function () {
       ).to.be.revertedWith("Address not winer");
   });
 
+  it("Too little money", async function () {  
+    const tx = await acc1.sendTransaction({
+      value: 1000000, 
+      to: lottery.address
+    });
+
+    await tx.wait()
+
+    await expect(
+      acc1.sendTransaction({
+        value: 1, 
+        to: lottery.address
+      })).to.be.revertedWith("Too little money");
+  });
+
   it("Collect winnings after an hour", async function () {  
     const tx = await acc1.sendTransaction({
       value: 1000000, 
